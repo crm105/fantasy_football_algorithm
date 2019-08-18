@@ -13,8 +13,8 @@ player_names <- player_table %>% select(id, last_name, first_name, position) %>%
 
 my_projections <- merge(my_projections, player_names)
 
-my_projections <- my_projections %>% select(last_name,first_name, pos, id, points, rank, pos_rank, sd_pts, avg_type ) %>%
-  filter (avg_type == "robust")
+my_projections <- my_projections %>% select(last_name,first_name, pos, id, points, rank, pos_rank, sd_pts, avg_type ) #%>%
+#  filter (avg_type == "robust")
 
 
 stopwords <- c(" Jr.", " II", " III", " IV")
@@ -25,6 +25,11 @@ my_projections$name <- gsub(x = my_projections$name, pattern = paste(stopwords, 
 my_projections$name <- sapply(my_projections$name, toupper)
 my_projections$name <- ifelse(my_projections$name == "MITCHELL TRUBISKY", "MITCH TRUBISKY", my_projections$name)
 
-write.csv(my_projections, "projections.csv")
+#write.csv(my_projections, "projections.csv")
 
 
+df <- my_projections
+
+cor ( df[df$avg_type == "robust", 'points'], df[df$avg_type == "weighted", 'points'])
+
+length(df[df$avg_type == "weighted", 'points'])
