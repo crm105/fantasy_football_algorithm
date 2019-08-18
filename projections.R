@@ -1,5 +1,5 @@
 library("ffanalytics")
-setwd("C:/Users/montg/Documents/active_projects/fantasy_football")
+setwd("C:/Users/montg/Documents/active_projects/fantasy_football_algorithm")
 
 
 my_scrape <- scrape_data(
@@ -26,3 +26,5 @@ my_projections$name <- sapply(my_projections$name, toupper)
 my_projections$name <- ifelse(my_projections$name == "MITCHELL TRUBISKY", "MITCH TRUBISKY", my_projections$name)
 
 write.csv(my_projections, "projections.csv")
+
+

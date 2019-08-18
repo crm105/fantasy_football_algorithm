@@ -1,4 +1,4 @@
-setwd("C:/Users/montg/Documents/active_projects/fantasy_football/expert_ranks")
+setwd("C:/Users/montg/Documents/active_projects/fantasy_football_algorithm/expert_ranks")
 library(dplyr)
 file_names <- dir() 
 

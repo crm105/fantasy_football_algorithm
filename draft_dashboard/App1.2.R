@@ -11,6 +11,7 @@ setwd("C:/Users/montg/Documents/active_projects/fantasy_football")
 library(shiny); library(DT); library(dplyr); library(Oarray)
 
 df <- read.csv("C:/Users/montg/Documents/active_projects/fantasy_football/projections.csv")
+df <- select(df, name, everything(), -X, -id, -avg_type, -first_name, -last_name)
 df <- dplyr :: arrange(df, (rank))
 df$opportunity_cost <- 0
 df$vorp <- 0
