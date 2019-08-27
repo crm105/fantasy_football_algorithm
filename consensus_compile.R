@@ -4,10 +4,11 @@ file_names <- dir()
 
 df <- do.call(rbind,lapply(file_names,read.csv))
 df$Overall <- gsub("\\s*\\([^\\)]+\\)","",as.character(df$Overall))
+stopwords <- c(" Jr", " II", " III", " IV", "\\.")
+
 df$Overall <- gsub(x = df$Overall, pattern = paste(stopwords, collapse = "|"), replacement = "")
 df$Overall <- sapply(df$Overall, toupper)
 player_list <- unique(df$Overall)
-stopwords <- c(" Jr.", " II", " III", " IV")
 
 
 

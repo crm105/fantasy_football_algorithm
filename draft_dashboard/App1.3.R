@@ -15,11 +15,18 @@ df <- select(df, name, everything(), -X, -id, -avg_type, -first_name, -last_name
 df <- dplyr :: arrange(df, (rank))
 df$opportunity_cost <- 0
 df$vorp <- 0
+df <- df[df$rank < 175,]
 drafted <- df[1,]; drafted$opportunity_cost <- 0 ; drafted$vorp <- 0; drafted <- drafted[-1,]
 adp <- read.csv('adp.csv')
 
 df <- df[df$name %in% adp[,'name'],]
 load("C:/Users/montg/Documents/active_projects/fantasy_football_algorithm/player_distributions.RData")
+load("C:/Users/montg/Documents/active_projects/fantasy_football_algorithm/mock_distributions.RData")
+
+player_dist <- player_dist[names(player_dist) %in% df$name] 
+adp <- adp[adp$name %in% df$name,] 
+player_dist <- player_dist[names(player_dist) %in% df$name] 
+
 
 
 # Define UI for application that draws a histogram
@@ -136,13 +143,21 @@ player_probabilities <- observeEvent(c(draft_picks(),  input$drafted_button),{
   }
 
 probabilities <- list()
-for (i in names(player_dist)){
+for (i in names(mock_dist)){
   pick_probs <- c()
   p <- isolate (draft_picks())
     
-    prob_expert <- integrate(approxfun (density (player_dist[[i]]), rule = 2, method = "constant"),subdivisions=2000, lower = 0, upper = p[counter$round + 1], abs.tol = .0002)
-    prob_adp <- pnorm(p[counter$round +1 ], mean = adp[adp$name == i, "AVG"], sd = adp[adp$name == i, "Std.Dev"]  )
-  probabilities[[i]] <-  (1/3 *prob_expert$value) + (2/3  * prob_adp) }
+    # prob_expert <- integrate(approxfun (density (player_dist[[i]]), rule = 2, method = "constant"),subdivisions=2000, lower = 0, upper = p[counter$round + 1], abs.tol = .0002)
+    # prob_adp <- pnorm(p[counter$round +1 ], mean = adp[adp$name == i, "AVG"], sd = adp[adp$name == i, "Std.Dev"]  )
+    # print(i)
+    prob_mock <- integrate(approxfun ( (mock_dist[[i]]), rule = 2, method = "constant"),subdivisions=4000, lower = 0, upper = p[counter$round + 1], abs.tol = .002)
+    probabilities[[i]] <- prob_mock$value
+    }
+    
+
+
+
+#probabilities[[i]] <-  (1/10 *prob_expert$value) + (2/10  * prob_adp) + (7/10 * prob_mock$value) }
 
 
 
